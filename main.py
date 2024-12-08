@@ -132,7 +132,7 @@ def add_header(canvas_pdf, title, seed):
     canvas_pdf.drawRightString(PAGE_WIDTH - 30, PAGE_HEIGHT -5, f"Forma: {seed}")
 
     canvas_pdf.setFont("Helvetica", 12)
-    canvas_pdf.drawRightString(PAGE_WIDTH/3, PAGE_HEIGHT -5, f"https://ensayosaleatorios.streamlit.app/")
+    canvas_pdf.drawRightString(240, PAGE_HEIGHT -5, f"https://ensayosaleatorios.streamlit.app/")
 
 def add_pdf_page(canvas_pdf, layout_page, categories_list, seed):
     X_CENTER = 30
