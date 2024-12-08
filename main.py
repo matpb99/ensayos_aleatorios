@@ -14,9 +14,13 @@ def get_random_elements(root, n, seed=None):
         seed = str(n) + "".join([random.choice(['1','2','3','4','5','6','7','8','9','0']) for _ in range(5)])
         random.seed(seed)
     else:
-        n = int(seed[0])
-        random.seed(seed)
+        if int(seed[0]) in [3,4,5]:
+            n = int(seed[0])
+        else:
+            seed = str(n) + "".join([random.choice(['1','2','3','4','5','6','7','8','9','0']) for _ in range(5)])
         
+        random.seed(seed)
+
     categories_folders = [os.path.join(root, d) for d in os.listdir(root) if os.path.isdir(os.path.join(root, d))]
 
     for category_folder in categories_folders:
@@ -200,9 +204,10 @@ if __name__ =='__main__':
 
             submit_button_seed = st.form_submit_button("Seleccionar")
             if submit_button_seed:
-                if input_seed.isdigit() == False or len(input_seed)!=6:
-                    st.error("El número seleccionado no es válido")
+                if input_seed.isdigit() == False or len(input_seed)!=6 or int(input_seed[0]) not in [3,4,5]:
+                    st.error("El número seleccionado no es válido, se escogerá otro.")
                 else:
+                    st.success("Forma {} seleccionada".format(input_seed))
                     st.session_state["input_seed"] = input_seed
 
     with st.container(border=True):
@@ -212,7 +217,7 @@ if __name__ =='__main__':
             submit_button_get_pdf = st.form_submit_button("Obtener pdf")    
 
         if submit_button_get_pdf:
-            if input_seed.isdigit() == False or len(input_seed)!=6:
+            if input_seed.isdigit() == False or len(input_seed)!=6 or int(input_seed[0]) not in [3,4,5]:
                 random_elements_per_category, categories_list, seed = get_random_elements('./database', n)
                 layout_pages = get_final_layout(random_elements_per_category, seed)
                 pdf_buffer = create_pdf(layout_pages, categories_list, seed)
