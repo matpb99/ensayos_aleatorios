@@ -11,11 +11,12 @@ def get_random_elements(root, n, seed=None):
     random_elements_per_category, categories_list = [],[]
 
     if seed == None:
-        seed = "".join([random.choice(['1','2','3','4','5','6','7','8','9','0']) for _ in range(6)])
+        seed = str(n) + "".join([random.choice(['1','2','3','4','5','6','7','8','9','0']) for _ in range(5)])
         random.seed(seed)
     else:
+        n = int(seed[0])
         random.seed(seed)
-
+        
     categories_folders = [os.path.join(root, d) for d in os.listdir(root) if os.path.isdir(os.path.join(root, d))]
 
     for category_folder in categories_folders:
@@ -189,7 +190,7 @@ if __name__ =='__main__':
 
     with st.container(border=True):
 
-        st.header("Ingresa el número de forma (opcional)")
+        st.header("Ingresa el número de forma (opcional, si se ingresa se omitirá la selección anterior)")
         with st.form("seed_number"):
             input_seed = st.text_input('Ingresar el número de la semilla (forma) para generar', 
                                        placeholder = "Escribe aquí un número",
@@ -215,8 +216,6 @@ if __name__ =='__main__':
                 random_elements_per_category, categories_list, seed = get_random_elements('./database', n)
                 layout_pages = get_final_layout(random_elements_per_category, seed)
                 pdf_buffer = create_pdf(layout_pages, categories_list, seed)
-  
-
             else:
                 random_elements_per_category, categories_list, seed = get_random_elements('./database', n, input_seed)
                 layout_pages = get_final_layout(random_elements_per_category, seed)
