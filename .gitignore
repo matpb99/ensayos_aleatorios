@@ -1,1 +1,5 @@
-prueba.ipynb
+__pycache__/
+preguntas_imagenes/
+raw_database/
+extract_paes.py
+extract_paes_v2.py
