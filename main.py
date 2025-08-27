@@ -6,6 +6,7 @@ from PIL import Image, ImageOps
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 
+# Global Constants for Layout
 MAX_PAGE_WIDTH = 612
 MAX_PAGE_HEIGHT = 792
 PAGE_MARGIN = 30 
@@ -132,6 +133,8 @@ def add_pdf_page(canvas_pdf, layout_page, categories_list, seed):
     X_CENTER = PAGE_MARGIN
     
     title = ""
+    # This logic assumes the first image in layout_page belongs to a category
+    # and that random_elements_per_category in session_state is ordered consistently.
     if "random_elements_per_category" in st.session_state:
         for cat_name, cat_images in zip(categories_list, st.session_state.random_elements_per_category):
             if layout_page and layout_page[0] in cat_images: 
@@ -192,11 +195,23 @@ if __name__ == '__main__':
             )
             submit_button_seed = st.form_submit_button("Seleccionar")
             if submit_button_seed:
-                if input_seed.isdigit() and len(input_seed) == 6 and int(input_seed[0]) in [3, 4, 5]:
-                    st.success(f"Forma {input_seed} seleccionada")
-                    st.session_state["input_seed"] = input_seed
+                if input_seed.isdigit() and (len(input_seed) == 6 or len(input_seed) == 7):
+                    valid_starts = [str(opt) for opt in options] 
+                    
+                    is_valid_start = False
+                    for start_val in valid_starts:
+                        if input_seed.startswith(start_val):
+                            is_valid_start = True
+                            break
+                    
+                    if is_valid_start:
+                        st.success(f"Forma {input_seed} seleccionada")
+                        st.session_state["input_seed"] = input_seed
+                    else:
+                        st.error(f"El número de forma no es válido. Debe comenzar con {', '.join(valid_starts)}.")
+                        st.session_state["input_seed"] = "" 
                 else:
-                    st.error("El número de forma no es válido. Debe ser un número de 6 dígitos que comience con 3, 4 o 5.")
+                    st.error("El número de forma no es válido. Debe ser un número de 6 o 7 dígitos.")
                     st.session_state["input_seed"] = "" 
 
     with st.container(border=True):
