@@ -178,7 +178,7 @@ def add_header(canvas_pdf, title, seed):
 
     canvas_pdf.setFont("Helvetica", 12)
     canvas_pdf.drawRightString(
-        240, MAX_PAGE_HEIGHT - 15 - 5, f"https://ensayosaleatorios.streamlit.app/"
+        240, MAX_PAGE_HEIGHT - 15 - 5, "https://ensayosaleatorios.streamlit.app/"
     )
 
 
